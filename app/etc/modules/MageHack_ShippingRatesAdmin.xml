@@ -6,7 +6,7 @@
     <modules>
         <MageHack_ShippingRatesAdmin>
             <active>true</active>
-            <codePool>core</codePool>
+            <codePool>community</codePool>
             <depends>
                 <Mage_Shipping/>
             </depends>
