@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+
+-->
+<config>
+    <modules>
+        <MageHack_ShippingRatesAdmin>
+            <active>true</active>
+            <codePool>core</codePool>
+        </MageHack_ShippingRatesAdmin>
+    </modules>
+</config>
