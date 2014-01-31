@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+
+-->
+<config>
+    <modules>
+        <MageHack_ShippingRatesAdmin>
+            <version>0.1.0</version>
+        </MageHack_ShippingRatesAdmin>
+    </modules>
+    <admin>
+        <routers>
+            <shippingratesadmin>
+                <use>admin</use>
+                <args>
+                    <module>MageHack_ShippingRatesAdmin</module>
+                    <frontName>shippingratesadmin</frontName>
+                </args>
+            </shippingratesadmin>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <shippingratesadmin>
+                    <file>shippingratesadmin.xml</file>
+                </shippingratesadmin>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <shippingratesadmin>
+                    <files>
+                        <default>shippingratesadmin.csv</default>
+                    </files>
+                </shippingratesadmin>
+            </modules>
+        </translate>
+    </adminhtml>
+	<global>
+	    <blocks>
+            <shippingratesadmin>
+                <class>MageHack_ShippingRatesAdmin_Block</class>
+            </shippingratesadmin>
+        </blocks>
+        <helpers>
+            <shippingratesadmin>
+                <class>MageHack_ShippingRatesAdmin_Helper</class>
+            </shippingratesadmin>
+        </helpers>
+    </global>
+</config>
