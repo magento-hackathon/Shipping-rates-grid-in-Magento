@@ -19,4 +19,9 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
         );
     }
     
+    public function editAction() {
+        $this->_initAction();
+        $this->renderLayout();
+    }
+    
 }
