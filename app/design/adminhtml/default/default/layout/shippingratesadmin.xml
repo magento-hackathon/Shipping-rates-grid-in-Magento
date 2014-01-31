@@ -8,4 +8,10 @@
             <block type="shippingratesadmin/adminhtml_tablerate" name="shippingratesadmin_tabelrate" />
         </reference>
     </shippingratesadmin_adminhtml_tablerate_index>
+    
+    <shippingratesadmin_adminhtml_tablerate_edit>
+        <reference name="content">
+            <block type="shippingratesadmin/adminhtml_tablerate_edit" name="shippingratesadmin_tabelrate_edit" />
+        </reference>
+    </shippingratesadmin_adminhtml_tablerate_edit>
 </layout>
