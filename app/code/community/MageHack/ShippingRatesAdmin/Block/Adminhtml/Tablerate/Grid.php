@@ -29,7 +29,9 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
             'default'   => '*',
         ));
 
-        $label = Mage::getStoreConfig('carriers/tablerate/condition_name');
+        $label = Mage::getSingleton('shipping/carrier_tablerate')
+            ->getCode('condition_name_short',Mage::getStoreConfig('carriers/tablerate/condition_name'));
+        Mage::getSingleton('adminhtml/system_config_source_shipping_tablerate');
         
         $this->addColumn('condition_value', array(
             'header'    => $label,
