@@ -25,7 +25,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Switch extends Mage_Adminhtml_
      
         $form = new Varien_Data_Form(array(
             'id'        => 'edit_form',
-            'action'    => $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id'))),
+            'action'    => $this->getUrl('*/*/*', array('website' => $this->getRequest()->getParam('website'))),
             'method'    => 'get',
             
         )); 
@@ -56,7 +56,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Switch extends Mage_Adminhtml_
             }
         </script>");
 
-        $form->setUseContainer(true);
+        $form->setUseContainer(false);
         $this->setForm($form);
      
         return parent::_prepareForm();
