@@ -5,6 +5,7 @@
 <layout version="0.1.0">
     <shippingratesadmin_adminhtml_tablerate_index>
         <reference name="content">
+            <block type="shippingratesadmin/adminhtml_switch" name="website_switcher" as="website_switcher" />
             <block type="shippingratesadmin/adminhtml_tablerate" name="shippingratesadmin_tabelrate" />
         </reference>
     </shippingratesadmin_adminhtml_tablerate_index>

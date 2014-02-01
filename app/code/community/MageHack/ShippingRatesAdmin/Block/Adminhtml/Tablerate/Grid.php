@@ -1,8 +1,24 @@
 <?php
 
-class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Adminhtml_Block_Shipping_Carrier_Tablerate_Grid
+class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+    
+    protected function _prepareCollection()
+    {
+        /** @var $collection Mage_Shipping_Model_Mysql4_Carrier_Tablerate_Collection */
+        $collection = Mage::getResourceModel('shipping/carrier_tablerate_collection');
+        $collection->setConditionFilter(Mage::getStoreConfig('carriers/tablerate/condition_name'));
+        
+        $site = Mage::app()->getRequest()->getParam('website');
+        $collection->setWebsiteFilter($site);
+        
+        
+        $this->setCollection($collection);
+        
+        
 
+        return parent::_prepareCollection();
+    }
     
     /**
      * Prepare table columns
@@ -11,6 +27,11 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
      */
     protected function _prepareColumns()
     {
+        $sites = Mage::app()->getWebsites();
+        $options = array();
+        foreach($sites as $site)
+            $options[$site->getId()] = $site->getName();
+
         $this->addColumn('dest_country', array(
             'header'    => Mage::helper('adminhtml')->__('Country'),
             'index'     => 'dest_country',
@@ -45,4 +66,11 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
 
         return Mage_Adminhtml_Block_Widget_Grid::_prepareColumns();
     }
+    
+    public function getRowUrl($row)
+    {
+        return $this->getUrl('*/*/edit', array('id' => $row->getPk()));
+    }
+    
+
 }

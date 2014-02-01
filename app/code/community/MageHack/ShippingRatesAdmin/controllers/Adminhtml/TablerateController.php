@@ -15,7 +15,7 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
     
     public function gridAction() {
         $this->getResponse()->setBody(
-            $this->getLayout()->createBlock('shippingratesadmin/adminhtml_tablerate_grid')->toHtml()
+            $this->getLayout()->createBlock('shippingratesadmin/adminhtml_tablerate_grid')->setWebsiteId(1)->toHtml()
         );
     }
     
