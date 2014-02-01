@@ -56,6 +56,8 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
         } else {
             // for new rates set the default country to the country of the store
             $shippingrate->setData('dest_country_id',Mage::getStoreConfig('general/country/default'));
+            
+            $shippingrate->setData('website_id',Mage::app()->getRequest()->getParam('website'));
         }
         
         Mage::register('shippingrate', $shippingrate);
@@ -119,8 +121,8 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
                 }else{
                    
                     // Add New
-                    $query = "insert into {$resource->getMainTable()} (dest_country_id, dest_region_id, dest_zip, condition_value, condition_name, price) "
-                    . "values (:dest_country_id, :dest_region_id, :dest_zip, :condition_value, :condition_name, :price)";                   
+                    $query = "insert into {$resource->getMainTable()} (website_id, dest_country_id, dest_region_id, dest_zip, condition_value, condition_name, price) "
+                    . "values (:website_id, :dest_country_id, :dest_region_id, :dest_zip, :condition_value, :condition_name, :price)";                   
                     
                     
                     $adapter->query($query, $binds);
@@ -131,7 +133,7 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
                 if ($this->getRequest()->getParam('back')) {
                     $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('pk')));
                 } else {
-                    $this->_redirect('*/*/');
+                    $this->_redirect('*/*/', array('website' => $data['website_id']));
                 }
  
                 return;

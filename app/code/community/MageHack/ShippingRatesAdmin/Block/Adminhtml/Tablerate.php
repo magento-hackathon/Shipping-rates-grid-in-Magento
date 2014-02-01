@@ -19,8 +19,8 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate extends Mage_Adminht
         $this->_blockGroup = 'shippingratesadmin';
         $this->_headerText = Mage::helper('shippingratesadmin')->__('Table Rates');
         $this->_addButtonLabel = Mage::helper('shippingratesadmin')->__('Add New Rate');
-        
-        
+        parent::__construct();
+        $this->_removeButton('add');
         $site_id = Mage::app()->getRequest()->getParam('website');
         if($site_id){
             $site_code = Mage::getModel('core/website')->load($site_id)->getCode();
@@ -37,8 +37,19 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate extends Mage_Adminht
                     'label'   => Mage::helper('shippingratesadmin')->__('Export'),
                     'onclick' => "setLocation('$export_url')",
                 ), 4);
+        
+        
+            $add_url = $this->getUrl('*/*/new', array(  'website' => $site_id) );
+
+            $this->_addButton('add', array(
+                        'class'   => 'add',
+                        'label'   => Mage::helper('shippingratesadmin')->__('Add New Rate'),
+                        'onclick' => "setLocation('$add_url')",
+                    ), 4);
         }
-        parent::__construct();
+        
+        
+        
     }
 
 }
