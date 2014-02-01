@@ -53,7 +53,10 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
             } else {
                 $shippingrate->setData($data);
             }   
-        } 
+        } else {
+            // for new rates set the default country to the country of the store
+            $shippingrate->setData('dest_country_id',Mage::getStoreConfig('general/country/default'));
+        }
         
         Mage::register('shippingrate', $shippingrate);
         $this->renderLayout();

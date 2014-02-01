@@ -58,10 +58,17 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
             'onchange' => 'getstate(this)',
         ));
         
+        
+        
+        if($shippingrate->getData('dest_country_id'))
+            $regions = Mage::getModel('directory/region')->getResourceCollection()->addCountryFilter($shippingrate->getData('dest_country_id'))->toOptionArray();
+        else
+            $regions = array( 0 => 'Select Country');
+                
         $fieldset->addField('dest_region_id', 'select', array(
             'name'  => 'dest_region_id',
             'label'     => Mage::helper('shippingratesadmin')->__('State/Region'),
-            'values' => array( 0 => 'Select Country')
+            'values' => $regions
             
         ));
         
@@ -84,23 +91,24 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
         
         $fieldset->addField('dest_zip', 'text', array(
             'name'      => 'dest_zip',
-            'label'     => Mage::helper('checkout')->__('Zip/Postal Code'),
-            'title'     => Mage::helper('checkout')->__('Zip/Postal Code'),
+            'label'     => Mage::helper('shippingratesadmin')->__('Zip/Postal Code'),
+            'title'     => Mage::helper('shippingratesadmin')->__('Zip/Postal Code'),
             'required'  => true,
+            'note'  => Mage::helper('shippingratesadmin')->__('Use * for all'),
         ));
         
         
         $fieldset->addField('condition_value', 'text', array(
             'name'      => 'condition_value',
-            'label'     => Mage::helper('checkout')->__('Order Subtotal (and above)'),
-            'title'     => Mage::helper('checkout')->__('Order Subtotal (and above)'),
+            'label'     => Mage::helper('shippingratesadmin')->__('Order Subtotal (and above)'),
+            'title'     => Mage::helper('shippingratesadmin')->__('Order Subtotal (and above)'),
             'required'  => true,
         ));
      
         $fieldset->addField('price', 'text', array(
             'name'      => 'price',
-            'label'     => Mage::helper('checkout')->__('Price'),
-            'title'     => Mage::helper('checkout')->__('Price'),
+            'label'     => Mage::helper('shippingratesadmin')->__('Price'),
+            'title'     => Mage::helper('shippingratesadmin')->__('Price'),
             'required'  => true,
         )); 
         

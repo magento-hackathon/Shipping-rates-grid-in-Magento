@@ -30,7 +30,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit extends Mage_Ad
      */
     public function getHeaderText()
     {   
-        if (Mage::registry('shippingrate') && Mage::registry('shippingrate')->getId()) {
+        if (Mage::registry('shippingrate') && Mage::registry('shippingrate')->getPk()) {
             return $this->__('Edit Shipping Rate');
         }   
         else {
