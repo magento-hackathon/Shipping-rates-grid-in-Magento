@@ -27,15 +27,25 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
      */
     protected function _prepareColumns()
     {
-        $sites = Mage::app()->getWebsites();
-        $options = array();
-        foreach($sites as $site)
-            $options[$site->getId()] = $site->getName();
-
+                
+        $site = Mage::getModel('core/website')->load(Mage::app()->getRequest()->getParam('website'));
+        $store = $site->getDefaultStore();
+        $countries = Mage::getResourceModel('directory/country_collection')->loadByStore($store->getId());
+        
+        
+        $country_options = array();
+        foreach($countries as $country)
+        {
+            
+         $country_options[$country->getData('iso3_code')] =    $country->getName();
+        }
+        
         $this->addColumn('dest_country', array(
             'header'    => Mage::helper('adminhtml')->__('Country'),
             'index'     => 'dest_country',
             'default'   => '*',
+            'type'     => 'options',
+            'options'   =>$country_options
         ));
 
         $this->addColumn('dest_region', array(
@@ -57,11 +67,15 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
         $this->addColumn('condition_value', array(
             'header'    => $label,
             'index'     => 'condition_value',
+            'type'  => 'number',
+            
         ));
 
         $this->addColumn('price', array(
             'header'    => Mage::helper('adminhtml')->__('Shipping Price'),
             'index'     => 'price',
+            'type'  => 'currency',
+            'currency' => 'base_currency_code',
         ));
 
         return Mage_Adminhtml_Block_Widget_Grid::_prepareColumns();
