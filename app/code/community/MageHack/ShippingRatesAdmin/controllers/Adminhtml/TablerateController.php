@@ -184,6 +184,22 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
         $this->getResponse()->setBody(json_encode($data));
     }
 
+    public function massDeleteAction() {
+
+        $ids = (array) $this->getRequest()->getParam('pk');
+        try {
+            $resource = Mage::getResourceModel('shipping/carrier_tablerate'); /* @var $resource Mage_Shipping_Model_Resource_Carrier_Tablerate */
+            $adapter = Mage::getSingleton('core/resource')->getConnection('core_write'); /* @var $adapter Zend_Db_Adapter_Abstract */
+            $numRowsAffected = $adapter->delete($resource->getMainTable(), " `pk` in (" . implode(", ", $ids) . ")");
+            $this->_getSession()->addSuccess(
+                    $this->__('Total of %d record(s) have been deleted.', $numRowsAffected)
+            );
+        } catch (Exception $e) {
+            $this->_getSession()->addError($this->__("An error occurred while updating records: '%s'", $e->getMessage()));
+        }
+        $this->_redirect('*/*/');
+    }    
+    
     public function deleteAction() {
         $id = $this->getRequest()->getParam('id');
         $success = false;

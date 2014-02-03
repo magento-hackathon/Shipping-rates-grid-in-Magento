@@ -80,6 +80,17 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
         return Mage_Adminhtml_Block_Widget_Grid::_prepareColumns();
     }
     
+    protected function _prepareMassaction() {
+        $this->setMassactionIdField('pk');
+        $this->getMassactionBlock()->setFormFieldName('pk');
+        $this->getMassactionBlock()->addItem('delete', array(
+            'label' => $this->_getHelper()->__('Delete'),
+            'url' => $this->getUrl('*/*/massDelete'),
+            'confirm' => $this->_getHelper()->__('Are you sure?')
+        ));
+        return $this;
+    }    
+    
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array('id' => $row->getPk()));
