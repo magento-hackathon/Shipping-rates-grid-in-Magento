@@ -149,4 +149,26 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
         }
     }
     
+    /**
+     * Fired when you change the website selected in the editing form to return
+     * website specific configuration that may affect fields in the form such as 
+     * the condition (weight/destination, price/destination...)
+     */
+    public function changewebsiteAction() {
+        $website = $this->getRequest()->getParam('website');
+        $conditionLabel = $label = Mage::getSingleton('shipping/carrier_tablerate')
+            ->getCode('condition_name_short', $this->_getShippingRatesAdminHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $website));
+        $data = array('conditionLabel' => $conditionLabel);
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($data));        
+    }
+    
+    /**
+     * 
+     * @return MageHack_ShippingRatesAdmin_Helper_Data
+     */
+    protected function _getShippingRatesAdminHelper() {
+        return Mage::helper('shippingratesadmin');
+    }
+    
 }

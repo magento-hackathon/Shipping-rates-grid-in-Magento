@@ -19,7 +19,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
 
         return parent::_prepareCollection();
     }
-    
+      
     /**
      * Prepare table columns
      *
@@ -29,15 +29,14 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
     {
                 
         $site = Mage::getModel('core/website')->load(Mage::app()->getRequest()->getParam('website'));
-        $store = $site->getDefaultStore();
-        $countries = Mage::getResourceModel('directory/country_collection')->loadByStore($store->getId());
+        
+        $countries = Mage::getResourceModel('directory/country_collection')->loadData();
         
         
         $country_options = array();
         foreach($countries as $country)
         {
-            
-         $country_options[$country->getData('iso3_code')] =    $country->getName();
+            $country_options[$country->getData('iso3_code')] =    $country->getName();
         }
         
         $this->addColumn('dest_country', array(
@@ -61,7 +60,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
         ));
 
         $label = Mage::getSingleton('shipping/carrier_tablerate')
-            ->getCode('condition_name_short',Mage::getStoreConfig('carriers/tablerate/condition_name'));
+            ->getCode('condition_name_short', $this->_getHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $site));
         Mage::getSingleton('adminhtml/system_config_source_shipping_tablerate');
         
         $this->addColumn('condition_value', array(
@@ -84,6 +83,15 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array('id' => $row->getPk()));
+    }
+    
+    /**
+     * 
+     * @return MageHack_ShippingRatesAdmin_Helper_Data
+     */
+    protected function _getHelper() 
+    {
+        return Mage::helper('shippingratesadmin');
     }
     
 

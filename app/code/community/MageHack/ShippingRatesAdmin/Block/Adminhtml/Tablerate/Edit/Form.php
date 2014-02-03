@@ -40,15 +40,40 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
             )); 
         }
         
-        $fieldset->addField('website_id', 'select', array(
+        $websiteSelect = $fieldset->addField('website_id', 'select', array(
                 'name'      => 'website_id',
                 'label'     => Mage::helper('shippingratesadmin')->__('Website'),
                 'title'     => Mage::helper('shippingratesadmin')->__('Website'),
                 'required'  => true,
-                'values'    => Mage::getSingleton('adminhtml/system_store')->getWebsiteValuesForForm(true, false),
+                'values'    => Mage::getSingleton('adminhtml/system_store')->getWebsiteValuesForForm(false, false),
+                'onchange'  => 'changeRatesWebsite()'
             ));
         
-   
+        $websiteSelect->setAfterElementHtml(
+        "<script type=\"text/javascript\">
+            //<![CDATA[
+                function changeRatesWebsite() {           
+                    var url = \"{$this->getUrl('shippingratesadmin/adminhtml_tablerate/changewebsite')}\";
+                    var website = $('website_id').getValue();
+                    new Ajax.Request(url, {
+                        method: 'post',
+                        parameters: {\"website\": website}, 
+                        onSuccess: function(transport) { 
+                            var jsonResponse = transport.responseJSON;
+                            if (!jsonResponse) {
+                                return;
+                            }                     
+                            var label = $$('label[for=\"condition_value\"]')[0];
+                            label.innerHTML = jsonResponse.conditionLabel;
+                        }
+                    });                    
+                }
+                
+                document.observe(\"dom:loaded\", function(){
+                    changeRatesWebsite();
+                });
+            //]]>
+            </script>");   
         
         
         $country = $fieldset->addField('dest_country_id', 'select', array(
@@ -122,4 +147,12 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
      
         return parent::_prepareForm();
     } 
+    
+    /**
+     * 
+     * @return MageHack_ShippingRatesAdmin_Helper_Data
+     */
+    protected function _getHelper() {
+        return $this->getHelper('shippingratesadmin');
+    }
 }
