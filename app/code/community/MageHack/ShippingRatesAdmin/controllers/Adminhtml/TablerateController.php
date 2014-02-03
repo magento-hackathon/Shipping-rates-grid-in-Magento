@@ -155,7 +155,12 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
      * the condition (weight/destination, price/destination...)
      */
     public function changewebsiteAction() {
+      
         $website = $this->getRequest()->getParam('website');
+        
+        // Update the current website for when you return to the grid.
+        Mage::getSingleton('admin/session')->setShippingRatesAdminSiteId($website);
+        
         $conditionLabel = $label = Mage::getSingleton('shipping/carrier_tablerate')
             ->getCode('condition_name_short', $this->_getShippingRatesAdminHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $website))
             . " <span class=\"required\">*</span>";
