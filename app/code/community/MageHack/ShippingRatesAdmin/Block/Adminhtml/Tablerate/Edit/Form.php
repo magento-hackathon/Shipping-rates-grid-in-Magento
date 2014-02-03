@@ -19,9 +19,13 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
      */
     protected function _prepareForm()
     {   
-        $shippingrate = Mage::registry('shippingrate');
-        
-     
+        $shippingrate = Mage::registry('shippingrate'); /* @var $shippingrate Varien_Object */
+        $sessionData = $this->_getHelper()->getShippingRateSessionData();
+        if (is_array($sessionData)) {
+            $shippingrate->setData($sessionData);
+            $this->_getHelper()->clearShippingRateSessionData();
+        }     
+           
         $form = new Varien_Data_Form(array(
             'id'        => 'edit_form',
             'action'    => $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id'))),
@@ -33,6 +37,9 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
             'legend'    => Mage::helper('checkout')->__('Rate Information'),
             'class'     => 'fieldset-wide',
         )); 
+        
+        
+       
      
         if ($shippingrate->getData('pk')) {
             $fieldset->addField('pk', 'hidden', array(
@@ -93,7 +100,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
         $fieldset->addField('dest_region_id', 'select', array(
             'name'  => 'dest_region_id',
             'label'     => Mage::helper('shippingratesadmin')->__('State/Region'),
-            'values' => $regions
+            'values' => $regions,
             
         ));
         
@@ -136,9 +143,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
             'title'     => Mage::helper('shippingratesadmin')->__('Price'),
             'required'  => true,
         )); 
-        
-
-        
+          
        
      
         $form->setValues($shippingrate->getData());
@@ -148,11 +153,12 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit_Form extends Ma
         return parent::_prepareForm();
     } 
     
+    
     /**
      * 
      * @return MageHack_ShippingRatesAdmin_Helper_Data
      */
     protected function _getHelper() {
-        return $this->getHelper('shippingratesadmin');
+        return Mage::helper('shippingratesadmin');
     }
 }

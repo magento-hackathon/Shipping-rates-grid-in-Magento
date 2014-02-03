@@ -26,8 +26,13 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Edit extends Mage_Ad
             $this->_addButton('duplicate', array(
                 'label' => Mage::helper('shippingratesadmin')->__('Duplicate'),
                 'class' => 'save',
-                'onclick' => "i4Duplicate()",
+                'onclick' => "duplicateShippingRate()",
             ));
+            
+            $this->_formScripts[] = "function duplicateShippingRate() {\n" .
+                "$('edit_form').action = $('edit_form').action + 'duplicate/1';\n" .
+                "editForm.submit(); \n" .
+            "}";
         } else {
             $this->_removeButton('delete');
         }

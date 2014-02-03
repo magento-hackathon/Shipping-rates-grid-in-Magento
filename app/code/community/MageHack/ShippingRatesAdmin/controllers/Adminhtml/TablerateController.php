@@ -32,6 +32,7 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
      * Add New Rate action
      */
     public function newAction() {
+        $this->_getShippingRatesAdminHelper()->clearShippingRateSessionData();
         $this->_forward('edit');
     }
 
@@ -88,10 +89,19 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
     }
 
     public function saveAction() {
+        $data = null;
         if ($this->getRequest()->getPost()) {
             try {
                 $data = $this->getRequest()->getPost();
 
+                if ($this->getRequest()->getParam("duplicate") && isset($data['pk'])) {
+                    unset($data['pk']);
+                    $this->_getSession()->addSuccess($this->__('Rate duplicated successfully'));
+                    $this->_getShippingRatesAdminHelper()->setShippingRateSessionData($data);
+                    $this->_redirect("*/*/edit");
+                    return;
+                }                
+                
                 $binds = array(
                     'website_id' => $data['website_id'],
                     'dest_country_id' => $data['dest_country_id'],
@@ -132,6 +142,8 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
 
                     $adapter->query($query, $binds);
                 }
+                
+                $this->_getShippingRatesAdminHelper()->clearShippingRateSessionData();
 
                 Mage::getSingleton('adminhtml/session')->addSuccess($this->__('The Shipping Rate has been saved.'));
                 // The following line decides if it is a "save" or "save and continue"
@@ -147,7 +159,7 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($this->__('An error occurred while saving this Shipping Rate.' . $e->getMessage()));
             }
-
+            $this->_getShippingRatesAdminHelper()->setShippingRateSessionData($data);
             $this->_redirectReferer();
         }
     }
