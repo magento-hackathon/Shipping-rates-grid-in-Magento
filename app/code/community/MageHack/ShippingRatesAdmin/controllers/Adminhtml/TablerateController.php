@@ -9,6 +9,16 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
     }   
  
     public function indexAction() {
+        // If loading the page without a site specified, use the last site 
+        // specified so the user doesn't have to keep selecting.
+        $siteId = Mage::app()->getRequest()->getParam('website');
+        if (is_null($siteId)) {
+            $siteId = Mage::getSingleton('admin/session')->getShippingRatesAdminSiteId();
+        }
+        $this->getRequest()->setParam('website', $siteId); 
+        Mage::getSingleton('admin/session')->setShippingRatesAdminSiteId($siteId);
+        
+        
         $this->_initAction()
             ->renderLayout();
     }

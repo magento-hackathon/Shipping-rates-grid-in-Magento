@@ -25,13 +25,6 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate extends Mage_Adminht
 
         $site_id = Mage::app()->getRequest()->getParam('website');
         
-        // If loading the page without a site specified, use the last site 
-        // specified so the user doesn't have to keep selecting.
-        if (is_null($site_id)) {
-            $site_id = Mage::getSingleton('admin/session')->getShippingRatesAdminSiteId();
-        }
-        Mage::getSingleton('admin/session')->setShippingRatesAdminSiteId($site_id);
-        
         
         if($site_id){
             $site_code = Mage::getModel('core/website')->load($site_id)->getCode();

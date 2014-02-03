@@ -31,6 +31,8 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Switch extends Mage_Adminhtml_
         )); 
         
         $site = Mage::app()->getRequest()->getParam('website');
+        
+        
         $fieldset = $form->addFieldset('base_fieldset', array(
             'legend'    => Mage::helper('checkout')->__('Select Website'),
             'class'     => 'fieldset-wide',
