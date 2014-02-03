@@ -157,7 +157,8 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
     public function changewebsiteAction() {
         $website = $this->getRequest()->getParam('website');
         $conditionLabel = $label = Mage::getSingleton('shipping/carrier_tablerate')
-            ->getCode('condition_name_short', $this->_getShippingRatesAdminHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $website));
+            ->getCode('condition_name_short', $this->_getShippingRatesAdminHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $website))
+            . " <span class=\"required\">*</span>";
         $data = array('conditionLabel' => $conditionLabel);
         $this->getResponse()->setHeader('Content-type', 'application/json');
         $this->getResponse()->setBody(json_encode($data));        
