@@ -155,9 +155,14 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
 
                 return;
             } catch (Mage_Core_Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_getSession()->addError($e->getMessage());
             } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($this->__('An error occurred while saving this Shipping Rate.' . $e->getMessage()));
+                if (strpos($e->getMessage(), "SQLSTATE[23000]") !== false) {
+                    $message = $this->__("The rate could not be saved because it duplicates another rate. Try changing some of the values and save again.");
+                } else  {
+                    $message = $this->__('An error occurred while saving this Shipping Rate.' . $e->getMessage());
+                }
+                Mage::getSingleton('adminhtml/session')->addError($message);
             }
             $this->_getShippingRatesAdminHelper()->setShippingRateSessionData($data);
             $this->_redirectReferer();
