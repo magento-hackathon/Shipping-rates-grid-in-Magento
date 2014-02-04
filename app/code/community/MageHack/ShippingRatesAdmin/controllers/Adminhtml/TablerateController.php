@@ -109,7 +109,7 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
                     'dest_zip' => $data['dest_zip'],
                     'condition_value' => $data['condition_value'],
                     'price' => $data['price'],
-                    'condition_name' => Mage::getStoreConfig('carriers/tablerate/condition_name')
+                    'condition_name' => $this->_getShippingRatesAdminHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $data['website_id'])
                 );
 
 
@@ -226,6 +226,49 @@ class MageHack_ShippingRatesAdmin_Adminhtml_TablerateController extends Mage_Adm
         
         $this->_redirect("*/*/index");
     }
+    
+   public function importAction() {
+        $this->_initAction();
+        $this->_title($this->__('Import Rates'));
+        $this->renderLayout();       
+   }
+   
+   public function importratesAction() {
+        $websiteId = $this->getRequest()->getParam('website_id');
+        $csvFile = !empty($_FILES['import']['tmp_name']) ? $_FILES['import']['tmp_name'] : null;
+        
+        
+        if (!$websiteId || !$csvFile) {
+            $this->_getSession()->addError($this->__("Please specify the website and file you wish to import"));
+            $this->_redirect('*/*/import');
+            return;
+        }
+        $_FILES = array('groups' => array('tmp_name' => array('tablerate' => array('fields' => array('import' => array('value' => $csvFile))))));
+   
+        $params = new Varien_Object();
+        $params->setScopeId($websiteId);   
+        $condition = array('groups' => array('tablerate' => array('fields' => array('condition_name' => array('value' => $this->_getShippingRatesAdminHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $websiteId))))));
+        $params->addData($condition);
+        $tableRate = Mage::getResourceModel('shipping/carrier_tablerate'); /* @var $tableRate Mage_Shipping_Model_Resource_Carrier_Tablerate */
+        
+        $message = "";
+        try {
+            $tableRate->uploadAndImport($params);
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+        } catch (Exception $e) {
+            $this->_getSession()->addError($this->__("An error occurred whilst importing the tablerates: %s", $e->getMessage()));
+            $this->_redirect('*/*/import');
+            return;
+        }
+        if (!$message) {
+            $message = $this->__("Table rates imported successfully");
+            $this->_getSession()->addSuccess($message);
+        } else {
+            $this->_getSession()->addError(str_replace("\n", "<br />", $message));
+        }
+        $this->_redirect('*/*/index');       
+   }
     
 
     /**

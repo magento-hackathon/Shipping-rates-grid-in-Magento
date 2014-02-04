@@ -31,7 +31,7 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate extends Mage_Adminht
 
             $export_url = $this->getUrl('adminhtml/system_config/exportTablerates', 
                                                 array(  'website' => $site_code, 
-                                                        'conditionName' => Mage::getStoreConfig('carriers/tablerate/condition_name')
+                                                        'conditionName' => $this->_getHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $site_id)
                                                     )
                                         );
 
@@ -41,7 +41,16 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate extends Mage_Adminht
                     'label'   => Mage::helper('shippingratesadmin')->__('Export'),
                     'onclick' => "setLocation('$export_url')",
                 ), 4);
-        
+   
+            $import_url = $this->getUrl('*/*/import', 
+                                                array(  'website' => $site_id)
+                                        );            
+            $this->_addButton('import_rates', array(
+                    'class'   => 'import',
+                    'label'   => Mage::helper('shippingratesadmin')->__('Import'),
+                    'onclick' => "setLocation('$import_url')",
+                ), 4);            
+            
         
             $add_url = $this->getUrl('*/*/new', array(  'website' => $site_id) );
 
@@ -52,8 +61,18 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate extends Mage_Adminht
                     ), 4);
         }
         
+
+        
         
         
     }
+    
+    /**
+     * 
+     * @return MageHack_ShippingRatesAdmin_Helper_Data
+     */
+    protected function _getHelper() {
+        return Mage::helper('shippingratesadmin');
+    }    
 
 }

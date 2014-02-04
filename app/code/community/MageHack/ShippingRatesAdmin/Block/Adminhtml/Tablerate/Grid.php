@@ -7,9 +7,9 @@ class MageHack_ShippingRatesAdmin_Block_Adminhtml_Tablerate_Grid extends Mage_Ad
     {
         /** @var $collection Mage_Shipping_Model_Mysql4_Carrier_Tablerate_Collection */
         $collection = Mage::getResourceModel('shipping/carrier_tablerate_collection');
-        $collection->setConditionFilter(Mage::getStoreConfig('carriers/tablerate/condition_name'));
-        
+
         $site = Mage::app()->getRequest()->getParam('website');
+        $collection->setConditionFilter($this->_getHelper()->getWebsiteConfigData('carriers/tablerate/condition_name', $site));
         $collection->setWebsiteFilter($site);
         
         

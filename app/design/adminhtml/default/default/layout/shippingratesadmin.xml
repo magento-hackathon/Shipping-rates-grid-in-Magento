@@ -15,4 +15,11 @@
             <block type="shippingratesadmin/adminhtml_tablerate_edit" name="shippingratesadmin_tabelrate_edit" />
         </reference>
     </shippingratesadmin_adminhtml_tablerate_edit>
+    
+    <shippingratesadmin_adminhtml_tablerate_import>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="shippingratesadmin/adminhtml_tablerate_import" name="shippingratesadmin_tabelrate_edit"></block>
+        </reference>
+    </shippingratesadmin_adminhtml_tablerate_import>        
 </layout>
